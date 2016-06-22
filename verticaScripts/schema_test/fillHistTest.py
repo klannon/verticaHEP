@@ -14,6 +14,9 @@ def main():
    
    cur.execute("drop table if exists tempTable")
    cur.execute("drop table if exists tempTable2")
+   cur.execute("DROP TABLE IF EXISTS tempTable3")
+
+   cur.execute("DROP TABLE IF EXISTS jetCosPhi")
    my_file = ROOT.TFile("test_1.root", "RECREATE")
 
    histJetPt = ROOT.TH1F("jetpt", "Pt", 100,0,200)
@@ -24,6 +27,8 @@ def main():
    jetPt_2lep2 = ROOT.TH1F("jetPt_2lep2","Jet Pt",100,0,200)   
    jetPt_2lepCharge = ROOT.TH1F("jetPt_2lepCharge","Jet Pt",100,0,200) 
    jetPt_2lepChargeJet = ROOT.TH1F("jetPt_2lepChargeJet","Jet Pt",100,0,200)
+   jet2Pt40 = ROOT.TH1F("jet2Pt40","nJets >= 2 Pt>40",100,0,200)
+   jetCosPhi = ROOT.TH1F("jetCosPhi","Cos(phi)",100,-2,2)
 
    fill_hist_from_query(histJetPt,"select Pt from jets",cur)
    fill_hist_from_query(lepPtHistSig,"select Pt from leptons",cur)
@@ -42,11 +47,20 @@ def main():
    #fill_hist_from_query(lepPhiHistSig,"select leptons.Phi from leptons",cur)
 
    fill_hist_from_query(jetPt_2lepChargeJet, "select Pt from jets where Event in (select Event from tempTable)  AND Event in (Select Event from tempTable where sumCharge != 0) AND Event in (SELECT event_info.Event from event_info left outer join jets on event_info.Event = jets.Event GROUP BY event_info.Event HAVING COUNT(jets.Event) > 2) ",cur) 
+  
+   cur.execute("CREATE TEMPORARY TABLE tempTable3(Event) ON COMMIT PRESERVE ROWS AS SELECT Event FROM jets where Pt >40 GROUP BY Event HAVING COUNT(Event) >= 2")
+
+   fill_hist_from_query(jet2Pt40, "SELECT Pt from jets WHERE Event in (SELECT Event FROM tempTable3)",cur)
+  
+   cur.execute("CREATE TABLE jetCosPhi(Event, CosPhi) AS SELECT Event, CASE WHEN min = 0 THEN 0 WHEN neg%2 =1 THEN -1*EXP(prod)  ELSE EXP(prod) END FROM ( SELECT Event, SUM(LN(ABS(COS(Phi)))) AS prod, SUM(CASE WHEN COS(Phi)  < 0 THEN 1 ELSE 0 END) AS neg,  MIN(ABS(COS(Phi))) as min FROM jets GROUP BY Event)subQ ")  
+ 
+   fill_hist_from_query(jetCosPhi, "SELECT CosPhi FROM jetCosPhi", cur)
    my_file.Write()
    my_file.Close()
 
    cur.execute("DROP TABLE tempTable")
    #cur.execute("DROP TABLE tempTable2")
+   cur.execute("DROP TABLE tempTable3")
 
 def fill_hist_from_query(target_hist, query, cursor):
    cursor.execute(query)
