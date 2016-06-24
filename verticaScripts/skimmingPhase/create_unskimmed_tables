@@ -49,157 +49,157 @@ def main():
    #event table 
    cur.execute("create table event_info (Run int, Lumi int, Event int, SampleID int, mcwgt float, wgt float, higgs_decay float, passTrigger float, reco_score float, norm_score_sum float, num_real_jets_bdt float, num_jet_matches_truth float, matching_results float, metPt float, metPhi float, PRIMARY KEY (Run, Lumi, Event, SampleID))")
    #copy event table
-   cur.execute("COPY event_info FROM '/home/newdbadmin/skimmingPhase/event.txt' parser fdelimitedparser()")
+   cur.execute("COPY event_info FROM '/home/newdbadmin/skimmingPhase/input/event/*' parser fdelimitedparser()")
 
    #preselected lepton table
    cur.execute("create table preselected_leptons (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pidgID float, dxy float, dz float, Charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPromptTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, miniAbsIsoNeutral float, rho float, effArea float, minIsoR float, miniAbsIsoNeutralcorr float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))" )
    #copy preselected lepton table
-   cur.execute("COPY preselected_leptons FROM '/home/newdbadmin/skimmingPhase/preLep.txt' parser fdelimitedparser()")
+   cur.execute("COPY preselected_leptons FROM '/home/newdbadmin/skimmingPhase/input/preLep/*' parser fdelimitedparser()")
 
    #preselected electrons table
    cur.execute("create table preselected_electrons (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pdgID float, dxy float, dz float, charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPrompTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, minAbsIsoNeutral float, rho float, effArea float, miniIsoR float, miniAbsIsoNeutralcorr float, SCeta float, isGsfCtfScPixChargeConsistent float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy preselected electrons table
-   cur.execute("COPY preselected_electrons FROM '/home/newdbadmin/skimmingPhase/preElec.txt' parser fdelimitedparser()") 
+   cur.execute("COPY preselected_electrons FROM '/home/newdbadmin/skimmingPhase/input/preElec/*' parser fdelimitedparser()") 
 
    #preselected muons table
    cur.execute("CREATE TABLE preselected_muons (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pdgID float, dxy float, dz float, charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPrompTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, minAbsIsoNeutral float, rho float, effArea float, miniIsoR float, miniAbsIsoNeutralcorr float, chargeFlip float, isPFMuon float, isTrackerMuon float, isGlobalMuon float, normalizedChi2 float, numberOfValidMuonHits float, numberOfMatchedStations float, numberOfValidPixelHits float, trackerLayersWithMeasurement float, localChi2 float, trKink float, validFrac float, segCompatibility float, CONTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy preselected muons table
-   cur.execute("COPY preselected_muons FROM '/home/newdbadmin/skimmingPhase/preMuon.txt' parser fdelimitedparser()")
+   cur.execute("COPY preselected_muons FROM '/home/newdbadmin/skimmingPhase/input/preMuon/*' parser fdelimitedparser()")
    
    #preslected taus
    cur.execute("CREATE TABLE preselected_taus (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, charge float, genPdgID float, genMotherPdgID float, genGrandMotherPdgID float, csv float, qgid float, pdgID float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))") 
    #copy preselected taus table
-   cur.execute("COPy preselected_taus FROM '/home/newdbadmin/skimmingPhase/preTau.txt' parser fdelimitedparser()")
+   cur.execute("COPy preselected_taus FROM '/home/newdbadmin/skimmingPhase/input/preTau/*' parser fdelimitedparser()")
 
    #preselected jets
    cur.execute("create table preselected_jets (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, Mass float, Charge float, genPdgID float, genMotherPdgID float, genGrandMotherPdgID float, csv float, qgid float, pdgID float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))" )
    #copy preselected jes
-   cur.execute("COPY preselected_jets FROM '/home/newdbadmin/skimmingPhase/preJet.txt' parser fdelimitedparser()")
+   cur.execute("COPY preselected_jets FROM '/home/newdbadmin/skimmingPhase/input/preJet/*' parser fdelimitedparser()")
 
    #Pruned gen particles
    cur.execute("CREATE TABLE pruned_genParticles (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, Mass float, pdgID float, status float, isPromptFinalState float, isPromptDecayed float, isDirectPromptTauDecayProductFinalState float, child0 float, child1 float, mother float, grandmother float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
-   cur.execute("COPY pruned_genParticles FROM '/home/newdbadmin/skimmingPhase/prunedGenPart.txt' parser fdelimitedparser()")
+   cur.execute("COPY pruned_genParticles FROM '/home/newdbadmin/skimmingPhase/input/prunedGenPart/*' parser fdelimitedparser()")
 
    #packed gen particles
    cur.execute("CREATE TABLE packed_genParticles (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, Mass float, pdgID float, status float, isPromptFinalState float, isPromptDecayed float, isDirectPromptTauDecayProductFinalState float, child0 float, child1 float, mother float, grandmother float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy packed gen particles
-   cur.execute("COPY packed_genParticles FROM /home/newdbadmin/skimmingPhase/prunedGenPart.txt' parser fdelimitedparser()")
+   cur.execute("COPY packed_genParticles FROM /home/newdbadmin/skimmingPhase/input/prunedGenPart/*' parser fdelimitedparser()")
 
    #Matched jets
    cur.execute("CREATE TABLE matched_jets (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, Mass float, charge float, genPdgID float, genMotherPdgID float, genGrandMotherPdgID float, csv float, qgid float, pdgID float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy matched jets
-   cur.execute("COPY matched_jets FROM /home/newdbadmin/skimmingPhase/matchJet.txt' parser fdelimitedparser()")
+   cur.execute("COPY matched_jets FROM /home/newdbadmin/skimmingPhase/input/matchJet/*' parser fdelimitedparser()")
   
    #Matched jets truth
    cur.execute("CREATE TABLE matched_jets_truth (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, Mass float, charge float, genPdgID float, genMotherPdgID float, genGrandMotherPdgID float, csv float, qgid float, pdgID float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy matched jets truth
-   cur.execute("COPY matched_jets_truth FROM /home/newdbadmin/skimmingPhase/matchJetTruth.txt' parser fdelimitedparser()")
+   cur.execute("COPY matched_jets_truth FROM /home/newdbadmin/skimmingPhase/input/matchJetTruth/*' parser fdelimitedparser()")
 
    #lep from Higgs BDT
    cur.execute("create table lep_fromHiggs_bdt (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pidgID float, dxy float, dz float, Charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPromptTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, miniAbsIsoNeutral float, rho float, effArea float, minIsoR float, miniAbsIsoNeutralcorr float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))" )
    #copy lep from Higgs BDT table
-   cur.execute("COPY lep_fromHiggs_bdt FROM '/home/newdbadmin/skimmingPhase/lepHiggsBDT.txt' parser fdelimitedparser()")
+   cur.execute("COPY lep_fromHiggs_bdt FROM '/home/newdbadmin/skimmingPhase/input/lepHiggsBDT/*' parser fdelimitedparser()")
    
    #lep from Top BDT
    cur.execute("create table lep_fromTop_bdt (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pidgID float, dxy float, dz float, Charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPromptTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, miniAbsIsoNeutral float, rho float, effArea float, minIsoR float, miniAbsIsoNeutralcorr float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))" )
    #copy lep from Top BDT table
-   cur.execute("COPY lep_fromTop_bdt FROM '/home/newdbadmin/skimmingPhase/lepTopBDT.txt' parser fdelimitedparser()")
+   cur.execute("COPY lep_fromTop_bdt FROM '/home/newdbadmin/skimmingPhase/input/lepTopBDT/*' parser fdelimitedparser()")
  
    #lep from Top Truth
    cur.execute("create table lep_fromTop_truth (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pidgID float, dxy float, dz float, Charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPromptTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, miniAbsIsoNeutral float, rho float, effArea float, minIsoR float, miniAbsIsoNeutralcorr float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))" )
    #copy lep from Top truth table
-   cur.execute("COPY lep_fromTop_truth FROM '/home/newdbadmin/skimmingPhase/lepTopTruth.txt' parser fdelimitedparser()")
+   cur.execute("COPY lep_fromTop_truth FROM '/home/newdbadmin/skimmingPhase/input/lepTopTruth/*' parser fdelimitedparser()")
 
    #lep from Higgs Truth
    cur.execute("create table lep_fromHiggs_truth (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, pidgID float, dxy float, dz float, Charge float, relIso float, miniIso float, genPdgID float, isPromptFinalState float, isDirectPromptTauDecayProductFinalState float, genMotherPdgID float, genGrandMotherPdgID float, lepMVA float, miniIsoCharged float, miniIsoNeutral float, jetPtRatio float, jetPtRel float, csv float, sip3D float, jet_nCharged_tracks float, miniAbsIsoCharged float, miniAbsIsoNeutral float, rho float, effArea float, minIsoR float, miniAbsIsoNeutralcorr float, CONSTRAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))" )
    #copy lep from Higgs truth table
-   cur.execute("COPY lep_fromHiggs_truth FROM '/home/newdbadmin/skimmingPhase/lepHiggsTruth.txt' parser fdelimitedparser()")
+   cur.execute("COPY lep_fromHiggs_truth FROM '/home/newdbadmin/skimmingPhase/input/lepHiggsTruth/*' parser fdelimitedparser()")
 
    #lep from top BDT tlv
    cur.execute("create table lep_fromTop_bdt_tlv (Run int, Lumi int, Event int, SampleID int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy lep from top bdt tlv
-   cur.execute("COPY lep_fromTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/lepTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY lep_fromTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/lepFromTopBDT_tlv/*' parser fdelimitedparser()")
 
 
    #lep from Higgs BDT tlv
    cur.execute("create table lep_fromHiggs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy lep from Higgs bdt tlv
-   cur.execute("COPY lep_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/lepHiggsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY lep_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/lepHiggsBDT_tlv/*' parser fdelimitedparser()")
   
    #bJet from Had Top BDT tlv
    cur.execute("create table bJet_fromHadTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy bJet from Had top bdt tlv
-   cur.execute("COPY bJet_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/bJetHadTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY bJet_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/bJetHadTopBDT_tlv/*' parser fdelimitedparser()")
 
    #bJet from Lep Top BDT tlv
    cur.execute("create table bJet_fromLepTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy bJet from Lep top bdt tlv
-   cur.execute("COPY bJet_fromLepTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/bJetLepTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY bJet_fromLepTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/bJetLepTopBDT_tlv/*' parser fdelimitedparser()")
 
    #wJet1 from Had Top BDT tlv
    cur.execute("create table wJet1_fromHadTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy wJet1 from Had top bdt tlv
-   cur.execute("COPY wJet1_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/wJet1HadTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY wJet1_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/wJet1HadTopBDT_tlv/*' parser fdelimitedparser()")
 
    #wJet from Had Top BDT tlv
    cur.execute("create table wJet2_fromHadTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy wJet2 from Had top bdt tlv
-   cur.execute("COPY wJet2_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/wJet2HadTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY wJet2_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/wJet2HadTopBDT_tlv/*' parser fdelimitedparser()")
 
    #wJet1 from Higgs BDT tlv
    cur.execute("create table wJet1_fromHiggs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy wJet1 from Higgs bdt tlv
-   cur.execute("COPY wJet1_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/wJet1HiggsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY wJet1_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/wJet1HiggsBDT_tlv/*' parser fdelimitedparser()")
 
    #wJet2 from Higgs BDT tlv
    cur.execute("create table wJet2_fromHiggs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy wJet2 from Higgs bdt tlv
-   cur.execute("COPY wJet2_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/wJet2HiggsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY wJet2_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/wJet2HiggsBDT_tlv/*' parser fdelimitedparser()")
 
    #w from Had Top BDT tlv
    cur.execute("create table w_fromHadTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy w from Had top bdt tlv
-   cur.execute("COPY w_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/wHadTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY w_fromHadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/wHadTopBDT_tlv/*' parser fdelimitedparser()")
 
    #w from Higgs BDT tlv
    cur.execute("create table w_fromHiggs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy w from Higgs bdt tlv
-   cur.execute("COPY w_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/wHiggsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY w_fromHiggs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/wHiggsBDT_tlv/*' parser fdelimitedparser()")
 
    #Higgs BDT tlv
    cur.execute("create table Higgs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy Higgs bdt tlv
-   cur.execute("COPY Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/higgsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/higgsBDT_tlv/*' parser fdelimitedparser()")
 
    #Had top BDT tlv
    cur.execute("create table HadTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy Had bdt tlv
-   cur.execute("COPY HadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/hadTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY HadTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/hadTopBDT_tlv/*' parser fdelimitedparser()")
 
    #Lep top BDT tlv
    cur.execute("create table LepTop_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy Lep top bdt tlv
-   cur.execute("COPY LepTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/lepTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY LepTop_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/lepTopBDT_tlv/*' parser fdelimitedparser()")
 
    #Lep top Higgs BDT tlv
    cur.execute("create table LepTop_Higgs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy Lep top Higgs bdt tlv
-   cur.execute("COPY LepTop_Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/lepTopHiggsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY LepTop_Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/lepTopHiggsBDT_tlv/*' parser fdelimitedparser()")
 
    #Had top Higgs BDT tlv
    cur.execute("create table HadTop_Higgs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy Had top Higgs bdt tlv
-   cur.execute("COPY HadTop_Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/hadTopHiggsBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY HadTop_Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/hadTopHiggsBDT_tlv/*' parser fdelimitedparser()")
 
    #Lep top Had top BDT tlv
    cur.execute("create table LepTopHadTop_Higgs_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy Lep top Had top bdt tlv
-   cur.execute("COPY LepTopHadTop_Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/lepTopHadTopBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY LepTopHadTop_Higgs_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/lepTopHadTopBDT_tlv/*' parser fdelimitedparser()")
 
    #tth BDT tlv
    cur.execute("create table tth_bdt_tlv (Run int, Lumi int, Event int, SampleuD int, Pt float, Eta float, Phi float, Mass float, CONSTAINT fk_event FOREIGN KEY (Run, Lumi, Event, SampleID) REFERENCES event_info(Run, Lumi, Event, SampleID))")
    #copy tth bdt tlv
-   cur.execute("COPY tth_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/tthBDT_tlv.txt' parser fdelimitedparser()")
+   cur.execute("COPY tth_bdt_tlv FROM '/home/newdbadmin/skimmingPhase/input/tthBDT_tlv/*' parser fdelimitedparser()")
 
 
    cur.execute("commit")
