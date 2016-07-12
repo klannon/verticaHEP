@@ -9,6 +9,7 @@ startTime = time.time()
 
 ch_all = ROOT.TChain('OSTwoLepAna/summaryTree')
 
+
 ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb/charlie_tree_11503.root')
 #ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb/charlie_tree_21176.root')
 #ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb/charlie_tree_30640.root')
@@ -19,22 +20,21 @@ ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb/charlie_tree_11503.ro
 #ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/charlie_tree_13381.root')
 
 #ch_all.Add('/tmpscratch/users/mlink2/rootFiles/charlie_tree_11503.root')
+
 '''
 for rootFile in os.listdir('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb'):
    if rootFile != 'dummy.txt':
       ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb/'+rootFile)
       #print(rootFile)
 
-
-
-
-
 for rootFile in os.listdir('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'):
    if os.path.getsize('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'+rootFile) > 1000000000:
       ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'+rootFile)
       #print(rootFile)
 
+
 '''
+
 chainTime = time.time() - startTime
 startLoop = time.time()
 numEntries = 0
@@ -42,6 +42,7 @@ numMu = 0
 totMu = 0
 numElec = 0
 totElec = 0
+
 
 for entry in ch_all:
    
@@ -57,7 +58,9 @@ for entry in ch_all:
 	    numEntries += 1
 
    for elec in entry.preselected_electrons:
+
       totElec += 1
+
       if elec.lepMVA > 0.75: #and elec.numMissingInnerHits == 0 and elec.passConversioVeto:
 	 numElec += 1
          numEntries += 1
@@ -69,6 +72,7 @@ print('numEntries: {}'.format(numEntries))
 
 print('numEntries: {} numElec: {} numMuon {}\nChain time: {}\nLoop time: {}\ntotal time: {}'.format(numEntries, numElec, numMu, chainTime, loopTime, totalTime))
 print('totMuon: {} totElec: {}'.format(totMu, totElec))
+
 #verticaInput = temp.replace('*','|')
 #f.write('verticaInput2.txt','w')
 
