@@ -3,20 +3,20 @@
 import ROOT
 import time
 import os
-ROOT.gSystem.Load('../CMSSW_7_6_3/lib/slc6_amd64_gcc493/libttH-13TeVMultiLeptonsTemplateMakers.so')
+#ROOT.gSystem.Load('../CMSSW_7_6_3/lib/slc6_amd64_gcc493/libttH-13TeVMultiLeptonsTemplateMakers.so')
 
 startTime = time.time()
 
 ch_all = ROOT.TChain('OSTwoLepAna/summaryTree')
-for rootFile in os.listdir('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb'):
+for rootFile in os.listdir('/data3/tth'):
    if rootFile != 'dummy.txt':
-      ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/tth_nonbb/'+rootFile)
+      ch_all.Add('/data3/tth/'+rootFile)
       #print(rootFile)
 
-for rootFile in os.listdir('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'):
-   if os.path.getsize('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'+rootFile) > 1000000000:
-      ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'+rootFile)
-      #print(rootFile)
+for rootFile in os.listdir('/data3/ttjet'):
+   #if os.path.getsize('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'+rootFile) > 1000000000:
+   ch_all.Add('/hadoop/store/user/lannon/bdtreco_v0/ttjets_semilep/'+rootFile)
+   #print(rootFile)
 
 chainTime = time.time() - startTime
 startLoop = time.time()
