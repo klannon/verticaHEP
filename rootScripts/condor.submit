@@ -1,0 +1,9 @@
+universe = vanilla
+executable = run.csh
+notification = Never
+log = condorLogs/condor.logfile
+getenv = True
+output = condorLogs/job_$(Process).stdout
+error = condorLogs/job_$(Process).stderr
+queue arguments from filelist_ttjet.txt
+
