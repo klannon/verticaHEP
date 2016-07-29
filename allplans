@@ -1,0 +1,122 @@
+#!/bin/bash
+
+OUTDIR="/tmp"
+DELETE="n"
+PROGRAM="evince"
+
+function usage() {
+    cat - << HEREDOC
+$0: Take an explain plan with digraph information and render as a png.
+
+Usage: $0 FILE
+
+Options:
+    -r program
+        The program to use to render the file. 'firefox' by default.
+        Arguments can be included.
+    -R
+        Do not render the file. Just save it to disk. Implies -X.
+    -X
+        Do not delete the file after rendering.
+    -o directory
+        Output directory. Must alreayd exist. '/tmp' by default.
+    -h
+        Display this help.
+HEREDOC
+}
+
+while getopts :hr:RXo: OPTVAL; do
+    case "$OPTVAL" in
+        h )
+            usage
+            exit 0
+            ;;
+        r )
+            PROGRAM="$OPTARG"
+            ;;
+        R )
+            PROGRAM=""
+            DELETE=""
+            ;;
+        X )
+            DELETE=""
+            ;;
+        o )
+            OUTDIR="$OPTARG"
+            if [ ! -d "$OUTDIR" ]; then
+                echo "Directory does not exist: $OUTDIR" >&2
+                exit 1;
+            fi
+            if [ ! -w "$OUTDIR" ]; then
+                echo "Directory is not writable: $OUTDIR" >&2
+                exit 1;
+            fi
+            ;;
+        * )
+            echo "Unknown option: $OPTVAL" >&2
+            exit 1
+            ;;
+    esac
+done
+
+shift $(( $OPTIND - 1 ))
+
+if [ "$#" = "0" ]; then
+    INPUTFILE="-"
+else
+    INPUTFILE="$1"
+    shift
+    if [ ! -f "$INPUTFILE" ]; then
+      echo "Not a file: $INPUTFILE" >&2
+      exit 1
+    fi
+
+    if [ ! -r "$INPUTFILE" ]; then
+      echo "Cannot read file: $INPUTFILE" >&2
+      exit 1
+    fi
+fi
+
+if [ "$#" != "0" ]; then
+    echo "Unexpected arguments: $*" >&2
+    exit 1
+fi
+
+function display_graph {
+    if [ -n "$PROGRAM" ]; then
+        echo "Rendering $1..."
+        $PROGRAM "$1"
+        local RETVAL="$?"
+        if [ "$RETVAL" != "0" ]; then
+            echo "Error running $PROGRAM $1" >&2
+            echo "Return code $RETVAL" >&2
+        fi
+    fi
+    if [ -n "$DELETE" ]; then
+        rm -f "$1"
+    else
+        echo "Saved $1"
+    fi
+}
+
+awk '
+/.*digraph.*/ {  
+                 graph = 1
+                 numgraph++
+                 print $0
+                 next
+             }
+/.*subgraph/ { graph++ }
+/.*/       {
+              if (graph > 0)
+              { 
+                print $0 
+              }
+           } 
+/.*}.*/ { graph--  
+          next } 
+' $INPUTFILE \
+    | dot -Tps2 > "$OUTDIR/plan$$.ps"
+
+#rm $OUTDIR/plan$$.ps
+#display_graph "$OUTDIR/plan$$.pdf" &
